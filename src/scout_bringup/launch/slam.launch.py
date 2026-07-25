@@ -12,7 +12,6 @@ def generate_launch_description():
     can_interface = LaunchConfiguration("can_interface")
     lidar_ip = LaunchConfiguration("lidar_ip")
     start_robot = LaunchConfiguration("start_robot")
-    use_rviz = LaunchConfiguration("use_rviz")
 
     bringup_share = FindPackageShare("scout_bringup")
     slam_params = PathJoinSubstitution(
@@ -76,7 +75,6 @@ def generate_launch_description():
             ),
         ],
         parameters=[{"use_sim_time": use_sim_time}],
-        condition=IfCondition(use_rviz),
     )
 
     return LaunchDescription(
@@ -85,7 +83,6 @@ def generate_launch_description():
             DeclareLaunchArgument("can_interface", default_value="can0"),
             DeclareLaunchArgument("lidar_ip", default_value="192.168.1.201"),
             DeclareLaunchArgument("start_robot", default_value="true"),
-            DeclareLaunchArgument("use_rviz", default_value="true"),
             robot_bringup,
             slam_toolbox,
             map_saver,

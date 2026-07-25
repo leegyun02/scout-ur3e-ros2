@@ -244,9 +244,11 @@ ros2 launch scout_bringup system.launch.py \
 ros2 launch scout_bringup system.launch.py \
   mode:=mapping \
   can_interface:=can0 \
-  lidar_ip:=192.168.1.201 \
-  use_rviz:=true
+  lidar_ip:=192.168.1.201
 ```
+
+`slam.launch.py`, `navigation.launch.py`, `system.launch.py`는 RViz를 항상
+실행합니다.
 
 ## SLAM 및 맵 생성 절차
 
