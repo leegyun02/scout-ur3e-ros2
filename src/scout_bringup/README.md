@@ -131,32 +131,6 @@ ros2 launch scout_bringup robot_bringup.launch.py
 | `start_lidar` | `true` | Velodyne 파이프라인 실행 |
 | `use_sim_time` | `false` | 실기에서는 `false` |
 
-베이스 없이 LiDAR와 TF만 확인:
-
-```bash
-ros2 launch scout_bringup robot_bringup.launch.py start_base:=false
-```
-
-LiDAR 없이 Scout odometry만 확인:
-
-```bash
-ros2 launch scout_bringup robot_bringup.launch.py start_lidar:=false
-```
-
-### `slam.launch.py`
-
-실기 bringup, SLAM Toolbox mapping, map saver server, RViz를 실행합니다.
-
-```bash
-ros2 launch scout_bringup slam.launch.py
-```
-
-하드웨어 bringup을 다른 터미널에서 이미 실행한 경우:
-
-```bash
-ros2 launch scout_bringup slam.launch.py start_robot:=false
-```
-
 ### `localization.launch.py`
 
 실기 bringup, map server, AMCL, RViz를 실행합니다. Nav2 주행 없이 localization만
