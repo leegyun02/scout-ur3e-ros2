@@ -72,7 +72,9 @@ def generate_launch_description():
             DeclareLaunchArgument("lidar_ip", default_value="192.168.1.201"),
             DeclareLaunchArgument(
                 "map",
-                description="Absolute path to the map YAML file",
+                default_value=PathJoinSubstitution(
+                    [FindPackageShare("scout_bringup"), "maps", "scout_map.yaml"]
+                ),
             ),
             DeclareLaunchArgument(
                 "params_file",

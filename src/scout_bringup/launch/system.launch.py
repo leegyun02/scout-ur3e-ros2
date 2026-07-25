@@ -1,37 +1,9 @@
-from pathlib import Path
-
 from launch import LaunchDescription
-from launch.actions import (
-    DeclareLaunchArgument,
-    IncludeLaunchDescription,
-    OpaqueFunction,
-)
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, PythonExpression
 from launch_ros.substitutions import FindPackageShare
-
-
-def validate_navigation_map(context):
-    if LaunchConfiguration("mode").perform(context) != "navigation":
-        return []
-
-    map_value = LaunchConfiguration("map").perform(context).strip()
-    if not map_value:
-        raise RuntimeError(
-            "Navigation requires an explicit map path. "
-            "Use map:=/absolute/path/to/map.yaml"
-        )
-
-    map_path = Path(map_value)
-    if not map_path.is_absolute():
-        raise RuntimeError(f"Map path must be absolute: {map_value}")
-    if map_path.suffix.lower() != ".yaml":
-        raise RuntimeError(f"Map path must point to a .yaml file: {map_value}")
-    if not map_path.is_file():
-        raise RuntimeError(f"Map YAML file does not exist: {map_value}")
-
-    return []
 
 
 def generate_launch_description():
@@ -83,12 +55,10 @@ def generate_launch_description():
             DeclareLaunchArgument("lidar_ip", default_value="192.168.1.201"),
             DeclareLaunchArgument(
                 "map",
-                default_value="",
-                description=(
-                    "Absolute map YAML path; required when mode:=navigation"
+                default_value=PathJoinSubstitution(
+                    [FindPackageShare("scout_bringup"), "maps", "scout_map.yaml"]
                 ),
             ),
-            OpaqueFunction(function=validate_navigation_map),
             mapping,
             navigation,
         ]

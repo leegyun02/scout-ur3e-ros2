@@ -76,7 +76,6 @@ base_link -> velodyne_link  robot_state_publisher
 - Local costmap은 센서 관측을 누적하지 않고 `5 Hz`로 갱신 및 발행
 - AMCL은 `5 cm` 이동 또는 `0.05 rad` 회전마다 자세 갱신
 - AMCL 초기 자세는 맵 원점 `(x=0, y=0, yaw=0)`
-- Localization/Nav2는 기본 맵을 사용하지 않으며 `map` 절대 경로 입력이 필수
 
 로봇이 맵 원점에서 출발하지 않으면 RViz의 `2D Pose Estimate`로 실제 위치와
 방향을 지정합니다.
@@ -135,11 +134,18 @@ ros2 launch scout_bringup robot_bringup.launch.py
 ### `localization.launch.py`
 
 실기 bringup, map server, AMCL, RViz를 실행합니다. Nav2 주행 없이 localization만
-검사할 때 사용합니다. 사용할 맵의 YAML 절대 경로를 직접 지정해야 합니다.
+검사할 때 사용합니다. `map`을 생략하면 패키지의 `maps/scout_map.yaml`을
+사용합니다.
+
+```bash
+ros2 launch scout_bringup localization.launch.py
+```
+
+다른 맵을 지정하려면:
 
 ```bash
 ros2 launch scout_bringup localization.launch.py \
-  map:="$HOME/maps/warehouse_v1.yaml"
+  map:="$HOME/maps/scout_map.yaml"
 ```
 
 AMCL은 기본적으로 맵 원점 `(0, 0, 0, yaw=0)`에서 시작합니다. 로봇이 맵
@@ -149,11 +155,17 @@ AMCL은 기본적으로 맵 원점 `(0, 0, 0, yaw=0)`에서 시작합니다. 로
 ### `navigation.launch.py`
 
 실기 bringup, map server, AMCL, Nav2 전체 스택, collision monitor, RViz를
-실행합니다. 사용할 맵의 YAML 절대 경로를 직접 지정해야 합니다.
+실행합니다. `map`을 생략하면 패키지의 `maps/scout_map.yaml`을 사용합니다.
+
+```bash
+ros2 launch scout_bringup navigation.launch.py
+```
+
+다른 맵을 지정하려면:
 
 ```bash
 ros2 launch scout_bringup navigation.launch.py \
-  map:="$HOME/maps/warehouse_v1.yaml"
+  map:="$HOME/maps/scout_map.yaml"
 ```
 
 기본 원점 초기화가 실제 위치와 맞는지 확인한 후 RViz의 `Nav2 Goal`을
@@ -172,13 +184,16 @@ ros2 launch scout_bringup system.launch.py mode:=mapping
 Localization 및 Nav2:
 
 ```bash
-ros2 launch scout_bringup system.launch.py \
-  mode:=navigation \
-  map:="$HOME/maps/warehouse_v1.yaml"
+ros2 launch scout_bringup system.launch.py mode:=navigation
 ```
 
-`mode:=navigation`에서는 `map`을 생략할 수 없습니다. 사용할 맵이 바뀌면
-이 경로를 원하는 YAML 파일로 직접 변경합니다.
+다른 맵을 지정하려면:
+
+```bash
+ros2 launch scout_bringup system.launch.py \
+  mode:=navigation \
+  map:="$HOME/maps/another_map.yaml"
+```
 
 공통 인자 사용 예:
 
@@ -236,41 +251,40 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
 ### 4. 맵 저장
 
-맵이 완성되면 별도 터미널에서 원하는 이름으로 저장합니다. 아래
-`warehouse_v1` 부분을 원하는 맵 이름으로 변경합니다.
+맵이 완성되면 별도 터미널에서:
 
 ```bash
 mkdir -p "$HOME/maps"
 
 ros2 run nav2_map_server map_saver_cli \
-  -f "$HOME/maps/warehouse_v1"
+  -f "$HOME/maps/scout_map"
 ```
 
 다음 두 파일이 생성됩니다.
 
 ```text
-~/maps/warehouse_v1.pgm
-~/maps/warehouse_v1.yaml
+~/maps/scout_map.pgm
+~/maps/scout_map.yaml
 ```
-
-`-f`에는 확장자를 붙이지 않습니다. 같은 이름의 `.pgm`과 `.yaml`이 함께
-생성되며 Nav2 실행 시에는 `.yaml` 경로를 사용합니다.
 
 ## 저장한 맵으로 Nav2 실행
 
 SLAM launch를 완전히 종료한 후 실행합니다. SLAM Toolbox와 AMCL을 동시에 켜면
 둘 다 `map -> odom`을 발행하여 TF가 충돌합니다.
 
-저장할 때 정한 맵 이름의 YAML 절대 경로를 지정합니다.
+패키지에 포함된 기본 `scout_map` 사용:
+
+```bash
+ros2 launch scout_bringup system.launch.py mode:=navigation
+```
+
+외부 맵 사용:
 
 ```bash
 ros2 launch scout_bringup system.launch.py \
   mode:=navigation \
-  map:="$HOME/maps/warehouse_v1.yaml"
+  map:="$HOME/maps/scout_map.yaml"
 ```
-
-다른 맵을 사용하려면 `map:=` 뒤의 경로만 직접 변경합니다. 경로가 비어 있거나
-파일이 존재하지 않으면 navigation은 실행되지 않습니다.
 
 순서:
 
