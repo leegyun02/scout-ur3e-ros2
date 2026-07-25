@@ -251,21 +251,25 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
 ### 4. 맵 저장
 
-맵이 완성되면 별도 터미널에서:
+맵이 완성되면 별도 터미널에서 `scout_bringup`의 기본 맵 경로에 저장합니다.
 
 ```bash
-mkdir -p "$HOME/maps"
+mkdir -p "$HOME/scout-ur3e-ros2/src/scout_bringup/maps"
 
 ros2 run nav2_map_server map_saver_cli \
-  -f "$HOME/maps/scout_map"
+  -f "$HOME/scout-ur3e-ros2/src/scout_bringup/maps/scout_map"
 ```
 
 다음 두 파일이 생성됩니다.
 
 ```text
-~/maps/scout_map.pgm
-~/maps/scout_map.yaml
+~/scout-ur3e-ros2/src/scout_bringup/maps/scout_map.pgm
+~/scout-ur3e-ros2/src/scout_bringup/maps/scout_map.yaml
 ```
+
+같은 이름의 기존 맵이 있으면 새 맵으로 교체됩니다. 이 경로에 저장한
+`scout_map.yaml`은 `system.launch.py mode:=navigation`의 기본 맵으로
+사용됩니다.
 
 ## 저장한 맵으로 Nav2 실행
 
