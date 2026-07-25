@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="scout_ur3e_gazebo_lite">
+
+  <!-- ========================================================= -->
+  <!-- Scout 모델 -->
+  <!-- ========================================================= -->
+  <xacro:include filename="$(find scout_description)/urdf/scout_v2.xacro"/>
+
+  <!-- ========================================================= -->
+  <!-- UR3e + Robotiq 모델 -->
+  <!-- ========================================================= -->
+  <xacro:include filename="$(find ur_robotiq_description)/urdf/ur3e_robotiq_2f_85_urdf.xacro"/>
+
+
+  <!-- ========================================================= -->
+  <!-- UR3e Mount Frame -->
+  <!-- ========================================================= -->
+  <link name="ur3e_mount_link">
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.0001" ixy="0" ixz="0"
+               iyy="0.0001" iyz="0"
+               izz="0.0001"/>
+    </inertial>
+  </link>
+
+  <joint name="ur3e_mount_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="ur3e_mount_link"/>
+    <origin xyz="0.0 0.0 0.22" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="ur3e_world_to_mount_joint" type="fixed">
+    <parent link="ur3e_mount_link"/>
+    <child link="world"/>
+    <origin xyz="0.25 0.0 -0.12" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- ========================================================= -->
+  <!-- Velodyne LiDAR: Gazebo lite cylinder -->
+  <!-- ========================================================= -->
+  <link name="velodyne_link">
+    <inertial>
+      <mass value="0.5"/>
+      <inertia ixx="0.001" ixy="0" ixz="0"
+               iyy="0.001" iyz="0"
+               izz="0.001"/>
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 0.04" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.055" length="0.08"/>
+      </geometry>
+      <material name="velodyne_black">
+        <color rgba="0.02 0.02 0.02 1.0"/>
+      </material>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0.04" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.055" length="0.08"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="velodyne_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="velodyne_link"/>
+    <origin xyz="0.38 0.0 0.10" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- ========================================================= -->
+  <!-- UR Control Box: Gazebo lite box -->
+  <!-- ========================================================= -->
+  <link name="ur_control_box_link">
+    <inertial>
+      <mass value="3.0"/>
+      <inertia ixx="0.02" ixy="0" ixz="0"
+               iyy="0.02" iyz="0"
+               izz="0.02"/>
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.35 0.40 0.30"/>
+      </geometry>
+      <material name="control_box_gray">
+        <color rgba="0.25 0.25 0.25 1.0"/>
+      </material>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.35 0.40 0.30"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="ur_control_box_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="ur_control_box_link"/>
+    <origin xyz="-0.15 0.005 0.26" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- ========================================================= -->
+  <!-- RealSense D435i: Gazebo lite box -->
+  <!-- 실제 realsense2_description mesh 대신 단순 box 사용 -->
+  <!-- ========================================================= -->
+  <link name="realsense_d435i_link">
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.0001" ixy="0" ixz="0"
+               iyy="0.0001" iyz="0"
+               izz="0.0001"/>
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.09 0.025 0.025"/>
+      </geometry>
+      <material name="realsense_black">
+        <color rgba="0.02 0.02 0.02 1.0"/>
+      </material>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.09 0.025 0.025"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="realsense_d435i_joint" type="fixed">
+    <parent link="ur3e_flange"/>
+    <child link="realsense_d435i_link"/>
+    <origin xyz="-0.025 0 -0.04" rpy="0 3.14159 3.14159"/>
+  </joint>
+
+  <!-- RealSense optical frames -->
+  <link name="realsense_d435i_color_frame"/>
+  <joint name="realsense_d435i_color_joint" type="fixed">
+    <parent link="realsense_d435i_link"/>
+    <child link="realsense_d435i_color_frame"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="realsense_d435i_color_optical_frame"/>
+  <joint name="realsense_d435i_color_optical_joint" type="fixed">
+    <parent link="realsense_d435i_color_frame"/>
+    <child link="realsense_d435i_color_optical_frame"/>
+    <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708"/>
+  </joint>
+
+  <link name="realsense_d435i_depth_frame"/>
+  <joint name="realsense_d435i_depth_joint" type="fixed">
+    <parent link="realsense_d435i_link"/>
+    <child link="realsense_d435i_depth_frame"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="realsense_d435i_depth_optical_frame"/>
+  <joint name="realsense_d435i_depth_optical_joint" type="fixed">
+    <parent link="realsense_d435i_depth_frame"/>
+    <child link="realsense_d435i_depth_optical_frame"/>
+    <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708"/>
+  </joint>
+
+</robot>

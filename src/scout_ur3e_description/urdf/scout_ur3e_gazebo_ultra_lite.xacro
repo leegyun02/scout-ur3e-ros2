@@ -1,0 +1,493 @@
+<?xml version="1.0"?>
+<robot name="scout_ur3e_gazebo_ultra_lite" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ========================================================= -->
+  <!-- Materials -->
+  <!-- ========================================================= -->
+  <material name="gray">
+    <color rgba="0.45 0.45 0.45 1"/>
+  </material>
+
+  <material name="dark_gray">
+    <color rgba="0.15 0.15 0.15 1"/>
+  </material>
+
+  <material name="black">
+    <color rgba="0.02 0.02 0.02 1"/>
+  </material>
+
+  <material name="blue">
+    <color rgba="0.1 0.2 0.8 1"/>
+  </material>
+
+  <material name="orange">
+    <color rgba="0.9 0.45 0.05 1"/>
+  </material>
+
+
+  <!-- ========================================================= -->
+  <!-- Base Link -->
+  <!-- ========================================================= -->
+  <link name="base_link">
+    <inertial>
+      <mass value="45.0"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="2.0" ixy="0" ixz="0" iyy="2.0" iyz="0" izz="2.5"/>
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 0.18" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.75 0.55 0.28"/>
+      </geometry>
+      <material name="gray"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0.18" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.75 0.55 0.28"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="base_footprint"/>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_footprint"/>
+    <origin xyz="0 0 -0.02" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- ========================================================= -->
+  <!-- Wheels -->
+  <!-- ========================================================= -->
+  <link name="front_left_wheel_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.11" length="0.08"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.11" length="0.08"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+    </inertial>
+  </link>
+
+  <joint name="front_left_wheel_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="front_left_wheel_link"/>
+    <origin xyz="0.28 0.30 0.08" rpy="0 0 0"/>
+  </joint>
+
+  <link name="front_right_wheel_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.11" length="0.08"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.11" length="0.08"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+    </inertial>
+  </link>
+
+  <joint name="front_right_wheel_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="front_right_wheel_link"/>
+    <origin xyz="0.28 -0.30 0.08" rpy="0 0 0"/>
+  </joint>
+
+  <link name="rear_left_wheel_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.11" length="0.08"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.11" length="0.08"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+    </inertial>
+  </link>
+
+  <joint name="rear_left_wheel_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="rear_left_wheel_link"/>
+    <origin xyz="-0.28 0.30 0.08" rpy="0 0 0"/>
+  </joint>
+
+  <link name="rear_right_wheel_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.11" length="0.08"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.11" length="0.08"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+    </inertial>
+  </link>
+
+  <joint name="rear_right_wheel_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="rear_right_wheel_link"/>
+    <origin xyz="-0.28 -0.30 0.08" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- ========================================================= -->
+  <!-- UR3e simplified arm -->
+  <!-- ========================================================= -->
+  <link name="ur3e_base_link">
+    <visual>
+      <origin xyz="0 0 0.04" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.08" length="0.08"/>
+      </geometry>
+      <material name="dark_gray"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.04" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.08" length="0.08"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="2.0"/>
+      <inertia ixx="0.02" ixy="0" ixz="0" iyy="0.02" iyz="0" izz="0.02"/>
+    </inertial>
+  </link>
+
+  <joint name="ur3e_base_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="ur3e_base_link"/>
+    <origin xyz="0.25 0.0 0.10" rpy="0 0 0"/>
+  </joint>
+
+  <link name="ur3e_shoulder_link">
+    <visual>
+      <origin xyz="0 0 0.18" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.055" length="0.36"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.18" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.055" length="0.36"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.5"/>
+      <inertia ixx="0.02" ixy="0" ixz="0" iyy="0.02" iyz="0" izz="0.02"/>
+    </inertial>
+  </link>
+
+  <joint name="ur3e_shoulder_joint" type="fixed">
+    <parent link="ur3e_base_link"/>
+    <child link="ur3e_shoulder_link"/>
+    <origin xyz="0 0 0.08" rpy="0 0 0"/>
+  </joint>
+
+  <link name="ur3e_upper_arm_link">
+    <visual>
+      <origin xyz="0.18 0 0" rpy="0 1.5708 0"/>
+      <geometry>
+        <cylinder radius="0.045" length="0.36"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+    <collision>
+      <origin xyz="0.18 0 0" rpy="0 1.5708 0"/>
+      <geometry>
+        <cylinder radius="0.045" length="0.36"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.2"/>
+      <inertia ixx="0.015" ixy="0" ixz="0" iyy="0.015" iyz="0" izz="0.015"/>
+    </inertial>
+  </link>
+
+  <joint name="ur3e_elbow_joint" type="fixed">
+    <parent link="ur3e_shoulder_link"/>
+    <child link="ur3e_upper_arm_link"/>
+    <origin xyz="0 0 0.36" rpy="0 0 0"/>
+  </joint>
+
+  <link name="ur3e_forearm_link">
+    <visual>
+      <origin xyz="0.15 0 0" rpy="0 1.5708 0"/>
+      <geometry>
+        <cylinder radius="0.04" length="0.30"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+    <collision>
+      <origin xyz="0.15 0 0" rpy="0 1.5708 0"/>
+      <geometry>
+        <cylinder radius="0.04" length="0.30"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.012" ixy="0" ixz="0" iyy="0.012" iyz="0" izz="0.012"/>
+    </inertial>
+  </link>
+
+  <joint name="ur3e_wrist_joint" type="fixed">
+    <parent link="ur3e_upper_arm_link"/>
+    <child link="ur3e_forearm_link"/>
+    <origin xyz="0.36 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="ur3e_flange">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <geometry>
+        <cylinder radius="0.045" length="0.06"/>
+      </geometry>
+      <material name="dark_gray"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <geometry>
+        <cylinder radius="0.045" length="0.06"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.5"/>
+      <inertia ixx="0.005" ixy="0" ixz="0" iyy="0.005" iyz="0" izz="0.005"/>
+    </inertial>
+  </link>
+
+  <joint name="ur3e_flange_joint" type="fixed">
+    <parent link="ur3e_forearm_link"/>
+    <child link="ur3e_flange"/>
+    <origin xyz="0.30 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="ur3e_tool0"/>
+  <joint name="ur3e_tool0_joint" type="fixed">
+    <parent link="ur3e_flange"/>
+    <child link="ur3e_tool0"/>
+    <origin xyz="0.04 0 0" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- ========================================================= -->
+  <!-- Simple Robotiq gripper -->
+  <!-- ========================================================= -->
+  <link name="robotiq_85_base_link">
+    <visual>
+      <origin xyz="0.05 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.10 0.10 0.06"/>
+      </geometry>
+      <material name="dark_gray"/>
+    </visual>
+    <collision>
+      <origin xyz="0.05 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.10 0.10 0.06"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.6"/>
+      <inertia ixx="0.003" ixy="0" ixz="0" iyy="0.003" iyz="0" izz="0.003"/>
+    </inertial>
+  </link>
+
+  <joint name="robotiq_85_base_joint" type="fixed">
+    <parent link="ur3e_tool0"/>
+    <child link="robotiq_85_base_link"/>
+    <origin xyz="0.04 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="robotiq_85_left_finger_link">
+    <visual>
+      <origin xyz="0.08 0.04 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.12 0.025 0.025"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin xyz="0.08 0.04 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.12 0.025 0.025"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
+    </inertial>
+  </link>
+
+  <joint name="robotiq_85_left_finger_joint" type="fixed">
+    <parent link="robotiq_85_base_link"/>
+    <child link="robotiq_85_left_finger_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="robotiq_85_right_finger_link">
+    <visual>
+      <origin xyz="0.08 -0.04 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.12 0.025 0.025"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin xyz="0.08 -0.04 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.12 0.025 0.025"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
+    </inertial>
+  </link>
+
+  <joint name="robotiq_85_right_finger_joint" type="fixed">
+    <parent link="robotiq_85_base_link"/>
+    <child link="robotiq_85_right_finger_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- ========================================================= -->
+  <!-- Velodyne -->
+  <!-- ========================================================= -->
+  <link name="velodyne_link">
+    <visual>
+      <origin xyz="0 0 0.04" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.055" length="0.08"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.04" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.055" length="0.08"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.5"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="velodyne_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="velodyne_link"/>
+    <origin xyz="0.38 0.0 0.10" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- ========================================================= -->
+  <!-- UR Control Box -->
+  <!-- ========================================================= -->
+  <link name="ur_control_box_link">
+    <visual>
+      <geometry>
+        <box size="0.35 0.40 0.30"/>
+      </geometry>
+      <material name="dark_gray"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.35 0.40 0.30"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="3.0"/>
+      <inertia ixx="0.02" ixy="0" ixz="0" iyy="0.02" iyz="0" izz="0.02"/>
+    </inertial>
+  </link>
+
+  <joint name="ur_control_box_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="ur_control_box_link"/>
+    <origin xyz="-0.15 0.005 0.26" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- ========================================================= -->
+  <!-- RealSense D435i simplified -->
+  <!-- ========================================================= -->
+  <link name="realsense_d435i_link">
+    <visual>
+      <geometry>
+        <box size="0.09 0.025 0.025"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.09 0.025 0.025"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
+    </inertial>
+  </link>
+
+  <joint name="realsense_d435i_joint" type="fixed">
+    <parent link="ur3e_flange"/>
+    <child link="realsense_d435i_link"/>
+    <origin xyz="-0.025 0 -0.04" rpy="0 3.14159 3.14159"/>
+  </joint>
+
+  <link name="realsense_d435i_color_optical_frame"/>
+  <joint name="realsense_d435i_color_optical_joint" type="fixed">
+    <parent link="realsense_d435i_link"/>
+    <child link="realsense_d435i_color_optical_frame"/>
+    <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708"/>
+  </joint>
+
+  <link name="realsense_d435i_depth_optical_frame"/>
+  <joint name="realsense_d435i_depth_optical_joint" type="fixed">
+    <parent link="realsense_d435i_link"/>
+    <child link="realsense_d435i_depth_optical_frame"/>
+    <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708"/>
+  </joint>
+
+</robot>

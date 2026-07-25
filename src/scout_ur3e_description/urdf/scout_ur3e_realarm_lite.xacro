@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<robot name="scout_ur3e_realarm_lite" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- 실제 UR3e 6축 모델 include -->
+  <xacro:include filename="$(find ur_robotiq_description)/urdf/ur3e_robotiq_2f_85_urdf.xacro"/>
+
+  <!-- ========================= -->
+  <!-- Materials -->
+  <!-- ========================= -->
+  <material name="scout_gray">
+    <color rgba="0.45 0.45 0.45 1.0"/>
+  </material>
+
+  <material name="black">
+    <color rgba="0.02 0.02 0.02 1.0"/>
+  </material>
+
+  <material name="blue">
+    <color rgba="0.1 0.2 0.8 1.0"/>
+  </material>
+
+
+  <!-- ========================= -->
+  <!-- Scout Lite Body -->
+  <!-- ========================= -->
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0 0 0.18" rpy="0 0 0"/>
+      <mass value="45.0"/>
+      <inertia ixx="2.0" ixy="0" ixz="0"
+               iyy="2.0" iyz="0"
+               izz="2.5"/>
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 0.18" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.75 0.55 0.28"/>
+      </geometry>
+      <material name="scout_gray"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0.18" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.75 0.55 0.28"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="base_footprint"/>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_footprint"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- ========================= -->
+  <!-- Scout Wheels Lite -->
+  <!-- ========================= -->
+  <xacro:macro name="simple_wheel" params="name x y">
+    <link name="${name}">
+      <inertial>
+        <mass value="1.0"/>
+        <inertia ixx="0.01" ixy="0" ixz="0"
+                 iyy="0.01" iyz="0"
+                 izz="0.01"/>
+      </inertial>
+
+      <visual>
+        <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+        <geometry>
+          <cylinder radius="0.11" length="0.08"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+        <geometry>
+          <cylinder radius="0.11" length="0.08"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${name}_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="${name}"/>
+      <origin xyz="${x} ${y} 0.08" rpy="0 0 0"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:simple_wheel name="front_left_wheel_link"  x="0.28"  y="0.30"/>
+  <xacro:simple_wheel name="front_right_wheel_link" x="0.28"  y="-0.30"/>
+  <xacro:simple_wheel name="rear_left_wheel_link"   x="-0.28" y="0.30"/>
+  <xacro:simple_wheel name="rear_right_wheel_link"  x="-0.28" y="-0.30"/>
+
+
+  <!-- ========================= -->
+  <!-- UR3e Mount on Scout -->
+  <!-- Scout 상판 높이 약 z=0.32 -->
+  <!-- ========================= -->
+  <link name="ur3e_mount_link"/>
+
+  <joint name="ur3e_mount_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="ur3e_mount_link"/>
+    <origin xyz="0.0 0.0 0.32" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="ur3e_world_to_mount_joint" type="fixed">
+    <parent link="ur3e_mount_link"/>
+    <child link="world"/>
+    <origin xyz="0.25 0 0.0" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- ========================= -->
+  <!-- RealSense D435i Lite -->
+  <!-- 카메라 모양만 단순 box로 표현 -->
+  <!-- ========================= -->
+  <link name="realsense_d435i_link">
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.0001" ixy="0" ixz="0"
+              iyy="0.0001" iyz="0"
+              izz="0.0001"/>
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.025 0.09 0.025"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.025 0.09 0.025"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="realsense_d435i_joint" type="fixed">
+    <parent link="ur3e_flange"/>
+    <child link="realsense_d435i_link"/>
+    <origin xyz="-0.025 0 -0.04" rpy="0 0 0"/>
+  </joint>
+
+  <link name="realsense_d435i_color_optical_frame"/>
+
+  <joint name="realsense_d435i_color_optical_joint" type="fixed">
+    <parent link="realsense_d435i_link"/>
+    <child link="realsense_d435i_color_optical_frame"/>
+    <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708"/>
+  </joint>
+
+</robot>

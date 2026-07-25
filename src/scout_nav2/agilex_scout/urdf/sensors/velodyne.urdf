@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="velodyne_description" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <link name="velodyne">
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <geometry>
+        <!-- STL 파일이 존재하면 사용 -->
+        <!-- 또는 STL이 없으면 아래처럼 cylinder 시각화도 가능 -->
+        <cylinder length="0.1" radius="0.05" />
+      </geometry>
+      <material name="Gray">
+        <color rgba="0.5 0.5 0.5 1.0" />
+      </material>
+    </visual>
+  </link>
+
+</robot>

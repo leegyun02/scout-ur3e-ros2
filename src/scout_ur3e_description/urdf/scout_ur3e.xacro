@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="scout_ur3e">
+
+  <!-- ========================================================= -->
+  <!-- Scout 모델 -->
+  <!-- ========================================================= -->
+  <xacro:include filename="$(find scout_description)/urdf/scout_v2.xacro"/>
+
+  <!-- ========================================================= -->
+  <!-- UR3e + Robotiq 모델 -->
+  <!-- ========================================================= -->
+  <xacro:include filename="$(find ur_robotiq_description)/urdf/ur3e_robotiq_2f_85_urdf.xacro"/>
+
+  <!-- ========================================================= -->
+  <!-- RealSense D435i 모델 -->
+  <!-- ========================================================= -->
+  <xacro:include filename="$(find realsense2_description)/urdf/_d435i.urdf.xacro"/>
+
+
+  <!-- ========================================================= -->
+  <!-- UR3e Mount Profile -->
+  <!-- base_link 기준:
+      프로파일 중심 위치 = x 0.25, y 0.0, z 0.075
+      프로파일 크기 = 0.27 x 0.135 x 0.07 m
+      프로파일 상단 z = 0.075 + 0.035 = 0.11
+  -->
+  <!-- ========================================================= -->
+  <link name="ur_mount_profile_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.135 0.27 0.055"/>
+      </geometry>
+      <material name="profile_gray">
+        <color rgba="0.35 0.35 0.35 1.0"/>
+      </material>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.135 0.27 0.055"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="2.0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0"
+              iyy="0.01" iyz="0"
+              izz="0.01"/>
+    </inertial>
+  </link>
+
+  <joint name="ur_mount_profile_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="ur_mount_profile_link"/>
+    <origin xyz="0.25 0.0 0.14" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="ur3e_world_to_profile_joint" type="fixed">
+    <parent link="ur_mount_profile_link"/>
+    <child link="world"/>
+    <origin xyz="0 0 0.0275" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- ========================================================= -->
+  <!-- Velodyne LiDAR -->
+  <!-- ========================================================= -->
+  <link name="velodyne_link">
+    <visual>
+      <origin xyz="0 0 0.04" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.055" length="0.08"/>
+      </geometry>
+      <material name="velodyne_black">
+        <color rgba="0.02 0.02 0.02 1.0"/>
+      </material>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0.04" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.055" length="0.08"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="velodyne_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="velodyne_link"/>
+    <origin xyz="0.4025 0.0 0.11" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- ========================================================= -->
+  <!-- UR Control Box -->
+  <!-- ========================================================= -->
+  <link name="ur_control_box_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.36 0.50 0.30"/>
+      </geometry>
+      <material name="control_box_gray">
+        <color rgba="0.25 0.25 0.25 1.0"/>
+      </material>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.36 0.50 0.30"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="ur_control_box_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="ur_control_box_link"/>
+    <origin xyz="-0.17 0.00 0.2625" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- ========================================================= -->
+  <!-- Intel RealSense D435i -->
+  <!-- ========================================================= -->
+  <xacro:sensor_d435i
+    parent="ur3e_flange"
+    name="realsense_d435i"
+    use_nominal_extrinsics="true">
+
+    <origin xyz="-0.01 0 -0.035" rpy="0 3.14159 3.14159"/>
+
+  </xacro:sensor_d435i>
+
+</robot>
