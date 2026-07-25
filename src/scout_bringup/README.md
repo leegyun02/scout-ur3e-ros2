@@ -191,7 +191,9 @@ ros2 launch scout_bringup localization.launch.py \
   map:="$HOME/maps/scout_map.yaml"
 ```
 
-RViz에서 `2D Pose Estimate`로 지도상의 초기 위치와 방향을 지정합니다.
+AMCL은 기본적으로 맵 원점 `(0, 0, 0, yaw=0)`에서 시작합니다. 로봇이 맵
+원점이 아닌 곳에 있으면 RViz의 `2D Pose Estimate`로 실제 위치와 방향을
+다시 지정합니다.
 
 ### `navigation.launch.py`
 
@@ -209,7 +211,8 @@ ros2 launch scout_bringup navigation.launch.py \
   map:="$HOME/maps/scout_map.yaml"
 ```
 
-초기 위치를 지정한 후 RViz의 `Nav2 Goal`을 사용합니다.
+기본 원점 초기화가 실제 위치와 맞는지 확인한 후 RViz의 `Nav2 Goal`을
+사용합니다. 위치가 다르면 먼저 `2D Pose Estimate`로 교정합니다.
 
 ### `system.launch.py`
 
@@ -336,7 +339,7 @@ ros2 launch scout_bringup system.launch.py \
 순서:
 
 1. RViz에서 지도와 LaserScan이 정렬되는지 확인
-2. `2D Pose Estimate`로 초기 위치 지정
+2. 시작 위치가 맵 원점과 다르면 `2D Pose Estimate`로 위치 지정
 3. AMCL particle cloud가 수렴하는지 확인
 4. `Nav2 Goal`로 목적지 지정
 
@@ -394,7 +397,7 @@ controller_server
 
 ### Nav2가 움직이지 않음
 
-- RViz에서 초기 위치를 지정했는지 확인
+- 기본 맵 원점 또는 RViz의 `2D Pose Estimate`가 실제 위치와 맞는지 확인
 - `map -> odom -> base_link` TF가 모두 연결되는지 확인
 - `/scan`이 collision monitor 영역 안에 로봇 자체를 장애물로 표시하는지 확인
 - `/cmd_vel_nav`, `/cmd_vel_smoothed`, `/cmd_vel`을 차례로 확인
