@@ -145,7 +145,7 @@ ros2 launch scout_bringup localization.launch.py
 
 ```bash
 ros2 launch scout_bringup localization.launch.py \
-  map:="$HOME/maps/scout_map.yaml"
+  map:="$HOME/scout-ur3e-ros2/src/scout_bringup/maps/scout_map.yaml"
 ```
 
 AMCL은 기본적으로 맵 원점 `(0, 0, 0, yaw=0)`에서 시작합니다. 로봇이 맵
@@ -165,7 +165,7 @@ ros2 launch scout_bringup navigation.launch.py
 
 ```bash
 ros2 launch scout_bringup navigation.launch.py \
-  map:="$HOME/maps/scout_map.yaml"
+  map:="$HOME/scout-ur3e-ros2/src/scout_bringup/maps/scout_map.yaml"
 ```
 
 기본 원점 초기화가 실제 위치와 맞는지 확인한 후 RViz의 `Nav2 Goal`을
@@ -192,7 +192,7 @@ ros2 launch scout_bringup system.launch.py mode:=navigation
 ```bash
 ros2 launch scout_bringup system.launch.py \
   mode:=navigation \
-  map:="$HOME/maps/another_map.yaml"
+  map:="$HOME/scout-ur3e-ros2/src/scout_bringup/maps/another_map.yaml"
 ```
 
 공통 인자 사용 예:
@@ -287,7 +287,7 @@ ros2 launch scout_bringup system.launch.py mode:=navigation
 ```bash
 ros2 launch scout_bringup system.launch.py \
   mode:=navigation \
-  map:="$HOME/maps/scout_map.yaml"
+  map:="$HOME/scout-ur3e-ros2/src/scout_bringup/maps/scout_map.yaml"
 ```
 
 순서:
