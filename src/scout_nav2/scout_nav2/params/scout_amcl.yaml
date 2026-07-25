@@ -5,7 +5,7 @@ amcl:
         alpha3: 0.2
         alpha4: 0.2
         alpha5: 0.2
-        base_frame_id: base_footprint
+        base_frame_id: base_link
         beam_skip_distance: 0.5
         beam_skip_error_threshold: 0.9
         beam_skip_threshold: 0.3
@@ -49,7 +49,7 @@ amcl:
 bt_navigator:
     ros__parameters:
         global_frame: map
-        robot_base_frame: base_footprint
+        robot_base_frame: base_link
         odom_topic: /odometry
         bt_loop_duration: 10 # ms
         default_server_timeout: 20 # ms
@@ -271,7 +271,7 @@ local_costmap:
             update_frequency: 5.0
             publish_frequency: 2.0
             global_frame: odom
-            robot_base_frame: base_footprint
+            robot_base_frame: base_link
             map_topic: /map
             rolling_window: true
             width: 8
@@ -330,9 +330,9 @@ global_costmap:
             update_frequency: 1.0
             publish_frequency: 1.0
             global_frame: map
-            robot_base_frame: base_footprint
+            robot_base_frame: base_link
             map_topic: /map
-            rolling_window: true
+            rolling_window: false
             footprint: "[ [0.45, 0.35], [0.45, -0.35], [-0.45, -0.35], [-0.45, 0.35] ]"
             footprint_padding: 0.02
             resolution: 0.05
@@ -415,7 +415,7 @@ planner_server:
 
 smoother_server:
     ros__parameters:
-        robot_base_frame: base_footprint
+        robot_base_frame: base_link
         footprint_topic: “global_costmap/published_footprint”
         costmap_topic: “global_costmap/costmap_raw”
         smoother_plugins: ["ConstrainedSmootherPlugin"]
@@ -466,7 +466,7 @@ behavior_server:
             plugin: "nav2_behaviors/AssistedTeleop"
         local_frame: odom
         global_frame: map
-        robot_base_frame: base_footprint
+        robot_base_frame: base_link
         transform_tolerance: 0.1
         simulate_ahead_time: 2.0
         max_rotational_vel: 1.0
@@ -511,7 +511,7 @@ slam_toolbox:
         # ROS Parameters
         odom_frame: odom
         map_frame: map
-        base_frame: base_footprint # --> base_footprint
+        base_frame: base_link
         scan_topic: /scan # --> /scan
         use_map_saver: true
         mode: mapping #OR localization
@@ -572,7 +572,7 @@ slam_toolbox:
 
 collision_monitor:
     ros__parameters:
-        base_frame_id: "base_footprint"
+        base_frame_id: "base_link"
         odom_frame_id: "odom"
         cmd_vel_in_topic: "cmd_vel_smoothed"
         cmd_vel_out_topic: "cmd_vel"

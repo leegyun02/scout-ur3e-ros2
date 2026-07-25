@@ -1,0 +1,9 @@
+velodyne_transform_node:
+  ros__parameters:
+    model: VLP16
+    min_range: 0.9
+    max_range: 100.0
+    view_direction: 0.0
+    fixed_frame: ""
+    target_frame: ""
+    organize_cloud: true
