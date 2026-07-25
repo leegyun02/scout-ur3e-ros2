@@ -9,7 +9,7 @@ install(
 )
 
 install(
-  FILES README.md
+  FILES README.md PARAMETER_TUNING.md
   DESTINATION share/${PROJECT_NAME}
 )
 

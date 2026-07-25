@@ -13,7 +13,7 @@ amcl:
         global_frame_id: map
         lambda_short: 0.1
         laser_likelihood_max_dist: 2.0
-        laser_max_range: 100.0
+        laser_max_range: 20.0 # matches /scan and SLAM Toolbox
         # laser_min_range: -1.0
         laser_min_range: 0.1
         laser_model_type: "likelihood_field"
@@ -173,10 +173,11 @@ controller_server:
             vx_std: 0.2
             vy_std: 0.2
             wz_std: 0.4
+            # Keep these limits consistent with velocity_smoother.
             vx_max: 0.5
-            vx_min: -0.5
-            vy_max: 0.5
-            wz_max: 1.0
+            vx_min: -0.3
+            vy_max: 0.0
+            wz_max: 0.5
             iteration_count: 1
             temperature: 0.3
             gamma: 0.015
@@ -300,7 +301,7 @@ local_costmap:
                 pointcloud: # no frame set, uses frame from message
                     topic: /velodyne_points
                     observation_persistence: 0.0
-                    expected_update_rate: 10.0
+                    expected_update_rate: 0.2 # seconds, not Hz
                     max_obstacle_height: 1.0
                     min_obstacle_height: 0.15
                     obstacle_max_range: 12.0
@@ -416,8 +417,8 @@ planner_server:
 smoother_server:
     ros__parameters:
         robot_base_frame: base_link
-        footprint_topic: “global_costmap/published_footprint”
-        costmap_topic: “global_costmap/costmap_raw”
+        footprint_topic: "/global_costmap/published_footprint"
+        costmap_topic: "/global_costmap/costmap_raw"
         smoother_plugins: ["ConstrainedSmootherPlugin"]
         ConstrainedSmootherPlugin:
             plugin: "nav2_constrained_smoother/ConstrainedSmoother"
@@ -489,8 +490,9 @@ velocity_smoother:
         smoothing_frequency: 20.0
         scale_velocities: False
         feedback: "OPEN_LOOP"
-        max_velocity: [1.0, 0.0, 0.5]
-        min_velocity: [-1.0, 0.0, -0.5]
+        # Matches the MPPI limits above: [vx, vy, wz].
+        max_velocity: [0.5, 0.0, 0.5]
+        min_velocity: [-0.3, 0.0, -0.5]
         max_accel: [2.5, 0.0, 2.0]
         max_decel: [-2.5, 0.0, -2.0]
         odom_topic: /odometry
