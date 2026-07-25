@@ -177,7 +177,14 @@ ros2 launch scout_bringup slam.launch.py start_robot:=false
 ### `localization.launch.py`
 
 실기 bringup, map server, AMCL, RViz를 실행합니다. Nav2 주행 없이 localization만
-검사할 때 사용합니다.
+검사할 때 사용합니다. `map`을 생략하면 패키지의 `maps/scout_map.yaml`을
+사용합니다.
+
+```bash
+ros2 launch scout_bringup localization.launch.py
+```
+
+다른 맵을 지정하려면:
 
 ```bash
 ros2 launch scout_bringup localization.launch.py \
@@ -189,7 +196,13 @@ RViz에서 `2D Pose Estimate`로 지도상의 초기 위치와 방향을 지정�
 ### `navigation.launch.py`
 
 실기 bringup, map server, AMCL, Nav2 전체 스택, collision monitor, RViz를
-실행합니다.
+실행합니다. `map`을 생략하면 패키지의 `maps/scout_map.yaml`을 사용합니다.
+
+```bash
+ros2 launch scout_bringup navigation.launch.py
+```
+
+다른 맵을 지정하려면:
 
 ```bash
 ros2 launch scout_bringup navigation.launch.py \
@@ -211,9 +224,15 @@ ros2 launch scout_bringup system.launch.py mode:=mapping
 Localization 및 Nav2:
 
 ```bash
+ros2 launch scout_bringup system.launch.py mode:=navigation
+```
+
+다른 맵을 지정하려면:
+
+```bash
 ros2 launch scout_bringup system.launch.py \
   mode:=navigation \
-  map:="$HOME/maps/scout_map.yaml"
+  map:="$HOME/maps/another_map.yaml"
 ```
 
 공통 인자 사용 예:
@@ -299,6 +318,14 @@ ros2 run nav2_map_server map_saver_cli \
 
 SLAM launch를 완전히 종료한 후 실행합니다. SLAM Toolbox와 AMCL을 동시에 켜면
 둘 다 `map -> odom`을 발행하여 TF가 충돌합니다.
+
+패키지에 포함된 기본 `scout_map` 사용:
+
+```bash
+ros2 launch scout_bringup system.launch.py mode:=navigation
+```
+
+외부 맵 사용:
 
 ```bash
 ros2 launch scout_bringup system.launch.py \

@@ -86,7 +86,7 @@ def generate_launch_description():
             DeclareLaunchArgument(
                 "map",
                 default_value=PathJoinSubstitution(
-                    [FindPackageShare("scout_nav2"), "maps", "my_map.yaml"]
+                    [FindPackageShare("scout_bringup"), "maps", "scout_map.yaml"]
                 ),
             ),
             DeclareLaunchArgument(
