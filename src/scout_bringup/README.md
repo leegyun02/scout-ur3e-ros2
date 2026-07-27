@@ -330,3 +330,90 @@ controller_server
 
 모든 경로는 package share 또는 launch 인자로 처리하며 특정 사용자 홈 디렉터리를
 코드에 하드코딩하지 않습니다.
+
+## SLAM 실행 시 지도가 표시되지 않고 scan 메시지가 버려지는 경우
+
+### 증상
+
+다음 명령으로 mapping을 실행했지만 RViz에 로봇만 표시되고 지도가 생성되지 않을
+수 있습니다.
+
+```bash
+ros2 launch scout_bringup system.launch.py mode:=mapping
+```
+
+이때 SLAM Toolbox 또는 RViz에 다음과 같은 메시지가 반복됩니다.
+
+```text
+Message Filter dropping message: frame 'base_link'
+discarding message because the queue is full
+the timestamp on the message is earlier than all the data in the transform cache
+```
+
+토픽과 TF를 확인했을 때 `/scan`은 발행되지만 `/odometry`가 없고
+`odom -> base_link`를 찾지 못합니다.
+
+```bash
+ros2 topic info /odometry
+ros2 run tf2_ros tf2_echo odom base_link
+```
+
+### 원인
+
+Scout의 CAN 인터페이스 `can0`가 `DOWN` 또는 `STOPPED` 상태이면
+`scout_base_node`가 로봇에 연결되지 못합니다. 그러면 `/odometry`와
+`odom -> base_link` TF가 발행되지 않으므로 SLAM Toolbox가 `/scan`을 로봇
+위치로 변환할 수 없고 메시지를 버립니다.
+
+PC를 재부팅하거나 USB-CAN 어댑터를 다시 연결한 뒤에는 `can0`를 다시 활성화해야
+할 수 있습니다. `scout_bringup` launch는 CAN 인터페이스를 자동으로 생성하거나
+활성화하지 않습니다.
+
+### 해결 방법
+
+실행 중인 launch를 `Ctrl+C`로 종료한 후 CAN 상태를 확인합니다.
+
+```bash
+ip -br link | grep can
+ip -details link show can0
+```
+
+`can0`가 `DOWN` 또는 `STOPPED`이면 bitrate를 `500000`으로 설정하고
+활성화합니다.
+
+```bash
+sudo ip link set can0 down
+sudo ip link set can0 type can bitrate 500000
+sudo ip link set can0 up
+```
+
+정상적으로 활성화되면 `UP`, `LOWER_UP`, `ERROR-ACTIVE`,
+`bitrate 500000`을 확인할 수 있습니다.
+
+```bash
+ip -details link show can0
+```
+
+Scout 전원이 켜져 있는 상태에서 CAN 메시지가 수신되는지도 확인합니다.
+
+```bash
+candump can0
+```
+
+메시지가 계속 출력되면 `Ctrl+C`로 종료하고 mapping을 다시 실행합니다.
+
+```bash
+source "$HOME/scout-ur3e-ros2/install/setup.bash"
+ros2 launch scout_bringup system.launch.py mode:=mapping
+```
+
+마지막으로 `/odometry`와 `odom -> base_link`가 정상적으로 발행되는지
+확인합니다.
+
+```bash
+ros2 topic info /odometry
+ros2 run tf2_ros tf2_echo odom base_link
+```
+
+`candump can0`에 아무 메시지도 나오지 않는다면 Scout 전원, 비상정지 상태,
+CAN 케이블, USB-CAN 어댑터 및 CAN 인터페이스 이름을 확인합니다.
