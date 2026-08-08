@@ -9,13 +9,13 @@ Nav2 자율주행, UR3e 동작, 손목 카메라 확인 방법을 모두 포함�
 ### SLAM Mapping
 
 <p align="center">
-  <img src="./gif/mapping_commend.gif" width="850" alt="Scout warehouse simulation SLAM mapping">
+  <img src="./gif/sim_slam_small.gif" width="850" alt="Scout warehouse simulation SLAM mapping">
 </p>
 
 ### Nav2 자율주행
 
 <p align="center">
-  <img src="./gif/Nav2.gif" width="850" alt="Scout warehouse simulation Nav2 autonomous navigation">
+  <img src="./gif/sim_nav2_small.gif" width="850" alt="Scout warehouse simulation Nav2 autonomous navigation">
 </p>
 
 ## 1. 현재 시뮬레이션 구성

@@ -23,3 +23,7 @@
 .DS_Store
 *~
 *.swp
+
+# Large source GIFs (optimized copies are committed instead)
+gif/sim_slam.gif
+gif/sim_nav2.gif
