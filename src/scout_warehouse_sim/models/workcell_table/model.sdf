@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+  <model name="workcell_table">
+    <static>true</static>
+    <link name="table">
+      <collision name="top_collision">
+        <pose>0 0 0.53 0 0 0</pose>
+        <geometry><box><size>0.80 1.60 0.08</size></box></geometry>
+      </collision>
+      <visual name="top_visual">
+        <pose>0 0 0.53 0 0 0</pose>
+        <geometry><box><size>0.80 1.60 0.08</size></box></geometry>
+        <material><ambient>0.38 0.25 0.12 1</ambient><diffuse>0.55 0.36 0.16 1</diffuse><specular>0.08 0.08 0.08 1</specular></material>
+      </visual>
+
+      <collision name="leg_fl_collision"><pose>-0.30 0.65 0.245 0 0 0</pose><geometry><box><size>0.08 0.08 0.49</size></box></geometry></collision>
+      <collision name="leg_fr_collision"><pose>-0.30 -0.65 0.245 0 0 0</pose><geometry><box><size>0.08 0.08 0.49</size></box></geometry></collision>
+      <collision name="leg_rl_collision"><pose>0.30 0.65 0.245 0 0 0</pose><geometry><box><size>0.08 0.08 0.49</size></box></geometry></collision>
+      <collision name="leg_rr_collision"><pose>0.30 -0.65 0.245 0 0 0</pose><geometry><box><size>0.08 0.08 0.49</size></box></geometry></collision>
+
+      <visual name="leg_fl_visual"><pose>-0.30 0.65 0.245 0 0 0</pose><geometry><box><size>0.08 0.08 0.49</size></box></geometry><material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.18 0.18 0.20 1</diffuse></material></visual>
+      <visual name="leg_fr_visual"><pose>-0.30 -0.65 0.245 0 0 0</pose><geometry><box><size>0.08 0.08 0.49</size></box></geometry><material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.18 0.18 0.20 1</diffuse></material></visual>
+      <visual name="leg_rl_visual"><pose>0.30 0.65 0.245 0 0 0</pose><geometry><box><size>0.08 0.08 0.49</size></box></geometry><material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.18 0.18 0.20 1</diffuse></material></visual>
+      <visual name="leg_rr_visual"><pose>0.30 -0.65 0.245 0 0 0</pose><geometry><box><size>0.08 0.08 0.49</size></box></geometry><material><ambient>0.12 0.12 0.13 1</ambient><diffuse>0.18 0.18 0.20 1</diffuse></material></visual>
+
+      <collision name="backstop_collision">
+        <pose>-0.36 0 0.79 0 0 0</pose>
+        <geometry><box><size>0.06 1.60 0.44</size></box></geometry>
+      </collision>
+      <visual name="backstop_visual">
+        <pose>-0.36 0 0.79 0 0 0</pose>
+        <geometry><box><size>0.06 1.60 0.44</size></box></geometry>
+        <material><ambient>0.30 0.32 0.34 1</ambient><diffuse>0.42 0.45 0.48 1</diffuse></material>
+      </visual>
+    </link>
+  </model>
+</sdf>
