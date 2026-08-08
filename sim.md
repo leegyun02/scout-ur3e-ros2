@@ -4,6 +4,20 @@
 조작하기 위한 명령어 중심 설명서다. Scout 주행, Velodyne 기반 SLAM, 맵 저장,
 Nav2 자율주행, UR3e 동작, 손목 카메라 확인 방법을 모두 포함한다.
 
+## 시뮬레이션 데모
+
+### SLAM Mapping
+
+<p align="center">
+  <img src="./gif/mapping_commend.gif" width="850" alt="Scout warehouse simulation SLAM mapping">
+</p>
+
+### Nav2 자율주행
+
+<p align="center">
+  <img src="./gif/Nav2.gif" width="850" alt="Scout warehouse simulation Nav2 autonomous navigation">
+</p>
+
 ## 1. 현재 시뮬레이션 구성
 
 - ROS 2 Humble

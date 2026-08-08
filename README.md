@@ -10,6 +10,15 @@ AgileX Scout 2.0 모바일 베이스에 **UR3e**, **Robotiq 2F-85**, **Velodyne 
 > UR3e 실제 제어와 MoveIt, 그리퍼, GNSS/LiDAR SLAM 패키지도 포함되어 있지만
 > 기본 SLAM/Nav2 launch에서는 자동으로 실행하지 않습니다.
 
+## Warehouse Simulation
+
+> **Gazebo 창고 시뮬레이션을 사용하려면 아래 문서를 먼저 확인하세요.**
+>
+> ### [▶ Scout 창고 SLAM·Nav2 시뮬레이션 전체 사용 설명서](./sim.md)
+>
+> 시뮬레이션 실행, 키보드 주행, SLAM, 맵 저장, Nav2, UR3e 제어 및 카메라 확인
+> 명령어가 정리되어 있습니다.
+
 ## Robot Model
 
 <p align="center">
@@ -108,6 +117,7 @@ mapping launch를 완전히 종료한 뒤 navigation을 실행해야 합니다.
 | 경로 | 역할 |
 |---|---|
 | `src/scout_bringup` | 실기 센서/베이스 bringup, SLAM, map server, AMCL, Nav2 통합 launch 및 파라미터 |
+| `src/scout_warehouse_sim` | Scout + 접힌 UR3e + VLP-16, A–D 작업대/집기 물체가 있는 창고 SLAM·Nav2 시뮬레이션 |
 | `src/scout_ur3e_description` | Scout + UR3e + Robotiq + D435i + VLP-16 통합 URDF/Xacro |
 | `src/scout_nav2/scout_nav2` | Scout용 Nav2 파라미터, RViz 설정, 맵 |
 | `src/scout_nav2/nav2_bringup` | Collision Monitor를 포함하도록 수정된 Nav2 bringup (`nav2_bringup_custom`) |
