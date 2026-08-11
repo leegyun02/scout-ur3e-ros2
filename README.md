@@ -10,6 +10,22 @@ AgileX Scout 2.0 모바일 베이스에 **UR3e**, **Robotiq 2F-85**,
 > UR3e 실제 제어와 MoveIt, 그리퍼, GNSS/LiDAR SLAM 실험 패키지도 포함되어
 > 있지만 기본 SLAM/Nav2 launch에서는 자동 실행하지 않습니다.
 
+## Real Robot Demo
+
+Scout–UR3e 모바일 매니퓰레이터를 실제 하드웨어에서 운용한 모습은 아래 영상에서
+확인할 수 있습니다. 이미지를 클릭하면 YouTube로 이동합니다.
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=2YwVMSP9Xxo">
+    <img src="https://img.youtube.com/vi/2YwVMSP9Xxo/hqdefault.jpg"
+         width="720" alt="Scout UR3e real robot operation video">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=2YwVMSP9Xxo">▶ 실차 운용 영상 YouTube에서 보기</a>
+</p>
+
 ## Documentation
 
 - [Nav2 학습 자료](./nav2_study/README.md) — 전체 구조, A*, DWB, MPPI
